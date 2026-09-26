@@ -29,7 +29,7 @@ else:
     from PIL import Image
     image = Image.open(uploaded).convert("RGB")
     c1,c2 = st.columns(2)
-    with c1: st.image(image,caption="Uploaded image",use_container_width=True)
+    with c1: st.image(image, caption="Uploaded image", width="stretch")
     result = predict_image(image,get_model())
     with c2:
         st.metric("Prediction",result["class_name"])
