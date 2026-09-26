@@ -1,10 +1,6 @@
-tensorflow
-shap
-scikit-learn
-pandas
-numpy
-matplotlib
-seaborn
-pillow
+tensorflow==2.15.0
+tf-keras
 streamlit
-jupyter
+shap
+pillow
+numpy
