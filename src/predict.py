@@ -5,7 +5,15 @@ import tensorflow as tf
 
 CLASS_NAMES = ["airplane","automobile","bird","cat","deer","dog","frog","horse","ship","truck"]
 ROOT = Path(__file__).resolve().parents[1]
-MODEL_PATH = ROOT/"models"/"cifar10_cnn_final.keras"
+# MODEL_PATH = ROOT/"models"/"cifar10_cnn_final.keras"
+
+
+# Modify your load_model function:
+def load_model():
+    model_path = "cifar10_cnn_final.keras"  # or path to your .h5 file
+    
+    # Force compile=False to avoid custom layer/loss deserialization errors
+    return tf.keras.models.load_model(model_path, compile=False)
 
 def load_model(model_path=MODEL_PATH):
     return tf.keras.models.load_model(model_path)
