@@ -1,10 +1,10 @@
-tensorflow
+tensorflow==2.20.0
+keras==3.10.0
+numpy<2.1
+pillow
+streamlit
 shap
 scikit-learn
 pandas
-numpy
 matplotlib
 seaborn
-pillow
-streamlit
-jupyter
