@@ -1,25 +1,55 @@
 from pathlib import Path
 import numpy as np
-from PIL import Image
 import tensorflow as tf
+from PIL import Image
 
-CLASS_NAMES = ["airplane","automobile","bird","cat","deer","dog","frog","horse","ship","truck"]
-ROOT = Path(__file__).resolve().parents[1]
-MODEL_PATH = ROOT/"models"/"cifar10_cnn_final.keras"
+CLASS_NAMES = [
+    "airplane",
+    "automobile",
+    "bird",
+    "cat",
+    "deer",
+    "dog",
+    "frog",
+    "horse",
+    "ship",
+    "truck"
+]
 
-def load_model(model_path=MODEL_PATH):
-    return tf.keras.models.load_model(model_path)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+MODEL_PATH = PROJECT_ROOT / "models" / "cifar10_cnn_final.keras"
+
+
+def load_model():
+    if not MODEL_PATH.exists():
+        raise FileNotFoundError(
+            f"Model file not found: {MODEL_PATH}"
+        )
+
+    return tf.keras.models.load_model(MODEL_PATH)
+
 
 def preprocess_image(image):
-    image = image.convert("RGB").resize((32,32))
-    arr = np.asarray(image,dtype=np.float32)/255.0
-    return np.expand_dims(arr,axis=0)
+    image = image.convert("RGB")
+    image = image.resize((32, 32))
 
-def predict_image(image, model=None):
-    model = model or load_model()
-    batch = preprocess_image(image)
-    probabilities = model.predict(batch,verbose=0)[0]
-    index = int(np.argmax(probabilities))
-    return {"class_name":CLASS_NAMES[index],"class_index":index,
-            "confidence":float(probabilities[index]),
-            "probabilities":probabilities,"input_array":batch}
+    image_array = np.asarray(image).astype("float32") / 255.0
+
+    return np.expand_dims(image_array, axis=0)
+
+
+def predict_image(image, model):
+    processed_image = preprocess_image(image)
+
+    probabilities = model.predict(
+        processed_image,
+        verbose=0
+    )[0]
+
+    predicted_index = int(np.argmax(probabilities))
+
+    return {
+        "class": CLASS_NAMES[predicted_index],
+        "confidence": float(probabilities[predicted_index]),
+        "probabilities": probabilities
+    }
