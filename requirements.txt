@@ -1,6 +1,0 @@
-tensorflow==2.15.0
-tf-keras
-streamlit
-shap
-pillow
-numpy
